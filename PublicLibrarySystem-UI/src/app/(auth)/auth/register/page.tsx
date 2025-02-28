@@ -44,9 +44,9 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold text-center mb-6">Signup</h1>
+        <h1 className="text-3xl font-bold text-center mb-6">Register</h1>
         {error && <p className="mb-4 text-red-600 text-center">{error}</p>}
         <form onSubmit={handleSignup} className="space-y-4">
           <InputField
@@ -81,12 +81,12 @@ const Signup = () => {
             required
           />
           <div className="flex space-x-4">
-            <Button type="submit" className="bg-green-600 text-white hover:bg-green-700">
+            <Button type="submit" className="w-2/3 bg-green-600 text-white hover:bg-green-700">
                 Signup
             </Button>
             <Button
                 type="button"
-                className="bg-gray-300 text-gray-800 hover:bg-gray-400 flex-1"
+                className="w-1/3 bg-gray-300 text-gray-800 hover:bg-gray-400 flex-1"
                 onClick={() => router.push("/auth/login")}
                 >
                 Login
