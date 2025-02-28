@@ -46,6 +46,11 @@ namespace PublicLibrarySystem_API.Controllers
 
             var count = await _context.Users.CountAsync(u => u.Username.ToUpper() == user.Username.ToUpper() || u.Email.ToUpper() == user.Email.ToUpper());
 
+            if (count > 0)
+            {
+                return BadRequest(new { message = "Account already exists with Username or Email " });
+            }
+
             // Hash the password securely
             user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
             _context.Users.Add(user);
