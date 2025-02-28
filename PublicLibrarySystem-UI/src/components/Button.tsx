@@ -14,7 +14,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
 }) => {
   return (
-    <button type={type} onClick={onClick} className={`w-full py-2 rounded transition cursor-pointer ${className}`}>
+    <button type={type} onClick={onClick} className={` py-2 rounded transition cursor-pointer ${className}`}>
       {children}
     </button>
   );

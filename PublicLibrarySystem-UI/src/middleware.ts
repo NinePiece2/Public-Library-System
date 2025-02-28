@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
     // Retrieve the token cookie
-    const tokenCookie = request.cookies.get("token");
+  const tokenCookie = request.cookies.get("token");
   // If user is already logged in and is visiting public pages, redirect them to the root.
   if (
     (pathname.startsWith("/auth/login") ||
