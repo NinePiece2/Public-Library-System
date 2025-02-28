@@ -5,8 +5,6 @@ metadata:
   namespace: coe892
 data:
   nginx.conf: |
-    env UI_HOST;
-
     events {
       worker_connections 1024;
     }
@@ -30,7 +28,7 @@ data:
         ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
 
         location / {
-          proxy_pass http://$UI_HOST:3000;
+          proxy_pass http://public-library-system-ui-service:3000;
           proxy_http_version 1.1;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection 'upgrade';

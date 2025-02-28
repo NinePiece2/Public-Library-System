@@ -53,13 +53,13 @@ spec:
               value: "/etc/ssl/certs/server.cert"
             - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
               value: "/etc/ssl/certs/server.key"
-            - name: Jwt:Issuer
+            - name: Jwt__Issuer
               value: "https://public-library-system.romitsagu.com"
-            - name: Jwt:Audience
+            - name: Jwt__Audience
               value: "https://public-library-system.romitsagu.com"
-            - name: Jwt:Key
+            - name: Jwt__Key
               value: "ORmEqGUYyJaC2GVgGOKb5yIQR9uGe1Ca7AKbWhg772/u/Rqjme+CONBd6zUXSlmMpC9+SrLIFXyrf9XhMEKjFapDNgcwjjHr3ABaou451traWFwevwPsU9JKwrhUyMd9OQrK+XPYRpUW+jNdOrALXidF7jkGISfxLPunQld/5Nk="
-            - name: Jwt:EmailConfirmationKey
+            - name: Jwt__EmailConfirmationKey
               value: "h82XPS3edDxdEcDjHH4jv5fqBWy2ymX8lIq5LF1SImpfgcrMVWMSQvvXSK36kMErwnT7UiRYlD65cnbCm3vE+YjdOrH7G/FLII7awvVyBDV7Qx7UFRXvBMCBVtp79YtiNcfef+UaOq+argMMREAaW2WJ5lseMpxY790toU+dP/g="
 
         - name: public-library-system-ui
@@ -71,7 +71,7 @@ spec:
             - name: NODE_ENV
               value: "production"
             - name: API_BASE_URL
-              value: "https://public-library-system-api:8443"
+              value: "https://public-library-system-api-service:8443"
             - name: NODE_TLS_REJECT_UNAUTHORIZED
               value: "0"
             - name: SECRET_API_KEY
@@ -80,9 +80,6 @@ spec:
         - name: public-library-system-nginx
           image: nginx:latest
           imagePullPolicy: Always
-          env:
-            - name: UI_HOST
-              value: "public-library-system-ui"
           volumeMounts:
             - name: ssl-cert-volume
               mountPath: "/etc/ssl/certs"
@@ -110,3 +107,37 @@ spec:
       targetPort: 443
       nodePort: 30003
   type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: public-library-system-ui-service
+  namespace: coe892
+spec:
+  selector:
+    run: public-library-system
+  ports:
+    - name: https
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: public-library-system-api-service
+  namespace: coe892
+spec:
+  selector:
+    run: public-library-system
+  ports:
+    - name: https
+      protocol: TCP
+      port: 8443
+      targetPort: 8443
+  type: ClusterIP
