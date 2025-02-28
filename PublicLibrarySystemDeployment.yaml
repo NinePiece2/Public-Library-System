@@ -71,7 +71,7 @@ spec:
             - name: NODE_ENV
               value: "production"
             - name: API_BASE_URL
-              value: "https://public-library-system-api-service:8443"
+              value: "https://localhost:8443"
             - name: NODE_TLS_REJECT_UNAUTHORIZED
               value: "0"
             - name: SECRET_API_KEY
@@ -110,34 +110,34 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: public-library-system-ui-service
-  namespace: coe892
-spec:
-  selector:
-    run: public-library-system
-  ports:
-    - name: https
-      protocol: TCP
-      port: 3000
-      targetPort: 3000
-  type: ClusterIP
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: public-library-system-ui-service
+#   namespace: coe892
+# spec:
+#   selector:
+#     run: public-library-system
+#   ports:
+#     - name: https
+#       protocol: TCP
+#       port: 3000
+#       targetPort: 3000
+#   type: ClusterIP
 
----
+# ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: public-library-system-api-service
-  namespace: coe892
-spec:
-  selector:
-    run: public-library-system
-  ports:
-    - name: https
-      protocol: TCP
-      port: 8443
-      targetPort: 8443
-  type: ClusterIP
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: public-library-system-api-service
+#   namespace: coe892
+# spec:
+#   selector:
+#     run: public-library-system
+#   ports:
+#     - name: https
+#       protocol: TCP
+#       port: 8443
+#       targetPort: 8443
+#   type: ClusterIP
