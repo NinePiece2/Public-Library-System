@@ -52,6 +52,7 @@ namespace PublicLibrarySystem_API.Services
 
             if (!response.IsSuccessStatusCode)
             {
+                Console.WriteLine("Unable to send Error Email.");
                 throw new Exception("Unable to send Error Email.");
             }
         }
@@ -78,6 +79,7 @@ namespace PublicLibrarySystem_API.Services
                 }
                 else
                 {
+                    Console.WriteLine("Unable to get access token for Email Error Notification.");
                     throw new Exception("Unable to get access token for Email Error Notification.");
                 }
             }

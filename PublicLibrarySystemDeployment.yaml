@@ -61,7 +61,9 @@ spec:
               value: "ORmEqGUYyJaC2GVgGOKb5yIQR9uGe1Ca7AKbWhg772/u/Rqjme+CONBd6zUXSlmMpC9+SrLIFXyrf9XhMEKjFapDNgcwjjHr3ABaou451traWFwevwPsU9JKwrhUyMd9OQrK+XPYRpUW+jNdOrALXidF7jkGISfxLPunQld/5Nk="
             - name: Jwt__EmailConfirmationKey
               value: "h82XPS3edDxdEcDjHH4jv5fqBWy2ymX8lIq5LF1SImpfgcrMVWMSQvvXSK36kMErwnT7UiRYlD65cnbCm3vE+YjdOrH7G/FLII7awvVyBDV7Qx7UFRXvBMCBVtp79YtiNcfef+UaOq+argMMREAaW2WJ5lseMpxY790toU+dP/g="
-
+            - name: UIBaseURL
+              value: "https://public-library-system.romitsagu.com"
+              
         - name: public-library-system-ui
           image: ninepiece2/public-library-system:ui
           imagePullPolicy: Always
