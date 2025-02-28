@@ -31,6 +31,8 @@ jobs:
             with:
               endpoint: context-${{ github.run_id }}-${{ github.job }}
               driver-opts: image=moby/buildkit:rootless
+              driver: docker-container
+              
           - name: Build and push
             uses: docker/build-push-action@v5
             with:
