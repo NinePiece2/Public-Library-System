@@ -40,7 +40,7 @@ spec:
           imagePullPolicy: Always
           volumeMounts:
             - name: ssl-cert-volume
-              mountPath: "/etc/ssl/certs"
+              mountPath: "/etc/ssl/https/certs"
               readOnly: true
           ports:
             - containerPort: 8443
@@ -50,9 +50,9 @@ spec:
             - name: ASPNETCORE_URLS
               value: "https://*:8443;http://*:8080"
             - name: ASPNETCORE_Kestrel__Certificates__Default__Path
-              value: "/etc/ssl/certs/server.cert"
+              value: "/etc/ssl/https/certs/server.cert"
             - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
-              value: "/etc/ssl/certs/server.key"
+              value: "/etc/ssl/https/certs/server.key"
             - name: Jwt__Issuer
               value: "https://public-library-system.romitsagu.com"
             - name: Jwt__Audience
@@ -63,7 +63,7 @@ spec:
               value: "h82XPS3edDxdEcDjHH4jv5fqBWy2ymX8lIq5LF1SImpfgcrMVWMSQvvXSK36kMErwnT7UiRYlD65cnbCm3vE+YjdOrH7G/FLII7awvVyBDV7Qx7UFRXvBMCBVtp79YtiNcfef+UaOq+argMMREAaW2WJ5lseMpxY790toU+dP/g="
             - name: UIBaseURL
               value: "https://public-library-system.romitsagu.com"
-              
+
         - name: public-library-system-ui
           image: ninepiece2/public-library-system:ui
           imagePullPolicy: Always
