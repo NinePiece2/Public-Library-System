@@ -107,37 +107,3 @@ spec:
       targetPort: 443
       nodePort: 30003
   type: LoadBalancer
-
----
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: public-library-system-ui-service
-#   namespace: coe892
-# spec:
-#   selector:
-#     run: public-library-system
-#   ports:
-#     - name: https
-#       protocol: TCP
-#       port: 3000
-#       targetPort: 3000
-#   type: ClusterIP
-
-# ---
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: public-library-system-api-service
-#   namespace: coe892
-# spec:
-#   selector:
-#     run: public-library-system
-#   ports:
-#     - name: https
-#       protocol: TCP
-#       port: 8443
-#       targetPort: 8443
-#   type: ClusterIP

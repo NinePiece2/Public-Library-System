@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { protectedProxyRequest } from '../../../lib/protectedProxy';
+import { protectedProxyRequest } from '../../../../lib/protectedProxy';
 
 type Data = { message?: string; token?: string } | Record<string, unknown>;
 
