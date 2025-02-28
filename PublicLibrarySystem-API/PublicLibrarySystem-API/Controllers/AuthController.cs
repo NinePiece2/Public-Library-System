@@ -117,7 +117,7 @@ namespace PublicLibrarySystem_API.Controllers
                 </html>
                 ";
 
-            _emailService.SendEmail(user.Email, "Confrim your Email", null, htmlBody, false, null, null);
+            await _emailService.SendEmail(user.Email, "Confrim your Email", null, htmlBody, false, null, null);
             await _context.SaveChangesAsync();
 
             return Ok(new { Message = "User registered successfully" });
