@@ -1,0 +1,25 @@
+FROM node:18-alpine AS build
+
+WORKDIR /app
+COPY UI/package.json UI/package-lock.json ./
+RUN npm install
+
+COPY UI .
+RUN npm run build
+
+FROM node:18-alpine AS deploy
+
+WORKDIR /app
+COPY --from=build /app/package.json ./
+COPY --from=build /app/package-lock.json ./
+RUN npm ci --only=production
+
+# Copy the build output (assuming a Next.js app using .next and public folders)
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
+# (Optional: copy any other necessary runtime files, e.g. next.config.js)
+COPY --from=build /app/next.config.js ./
+
+EXPOSE 3000
+
+CMD ["npm", "start"]

@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ssl-cert
+  namespace: coe892
+type: Opaque
+data:
+  server.cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tDQpNSUlEK1RDQ0F1R2dBd0lCQWdJVVRVeGZDbVNHbWFKcGI1U3BwNG9Jb1MrU0NqSXdEUVlKS29aSWh2Y05BUUVMDQpCUUF3Z1lzeEN6QUpCZ05WQkFZVEFrTkJNUkF3RGdZRFZRUUlEQWRQYm5SaGNtbHZNUkV3RHdZRFZRUUhEQWhDDQpjbUZ0Y0hSdmJqRU9NQXdHQTFVRUNnd0ZVbTl0YVhReEN6QUpCZ05WQkFzTUFrbFVNUll3RkFZRFZRUUREQTF5DQpiMjFwZEhOaFozVXVZMjl0TVNJd0lBWUpLb1pJaHZjTkFRa0JGaE55YjIxcGRFQnliMjFwZEhOaFozVXVZMjl0DQpNQjRYRFRJME1ESXhPREEzTVRFME1Wb1hEVEkwTURNeE9UQTNNVEUwTVZvd2dZc3hDekFKQmdOVkJBWVRBa05CDQpNUkF3RGdZRFZRUUlEQWRQYm5SaGNtbHZNUkV3RHdZRFZRUUhEQWhDY21GdGNIUnZiakVPTUF3R0ExVUVDZ3dGDQpVbTl0YVhReEN6QUpCZ05WQkFzTUFrbFVNUll3RkFZRFZRUUREQTF5YjIxcGRITmhaM1V1WTI5dE1TSXdJQVlKDQpLb1pJaHZjTkFRa0JGaE55YjIxcGRFQnliMjFwZEhOaFozVXVZMjl0TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGDQpBQU9DQVE4QU1JSUJDZ0tDQVFFQTBhYXhMb2JpL25jbmNidHhaaTk4dzkxdTIvcWxscWpyME84VmlxK3NBWEdnDQovNzJUNXhRaUF1dVpyamk2YU43R1JvMXVtNHRCdHhqUnhIM1JiY29CY3BNT2lBUUYrbE1hM1EwT2pyNVRjWXR6DQpNMVJpK2tNMHBzNTRCZ2YxVG1scktHSjNOK1VCcnpVYml1ajhZMm1hWkNGcUhqU2R3N3JkQnFPNW9vdGZvRng1DQpEcW81aWtERW1wYVBaSXVpK253VnBGd0xHb0VlMmR5SmJUclZnMGdvWGcvUUVNaU9kR0tDOUFNWUQrMG5maHMzDQpvTWhsMm16VUF6Z1JwSHA4WmIyNVhGOEVjZGcwS0hCYmt6NzRkYVVZZHdOU0NOdVRKeEZUR0FIRWVBblRWdGJ2DQpVNENDUTBmZzIzcnlkRnZ4MFZsSVI0SW5VNGZjNnNacHRaSTB1ZzlQSlFJREFRQUJvMU13VVRBZEJnTlZIUTRFDQpGZ1FVZU11ZUxNMVp4LzJWdHkvWUt4TXlUVG5EZ0JFd0h3WURWUjBqQkJnd0ZvQVVlTXVlTE0xWngvMlZ0eS9ZDQpLeE15VFRuRGdCRXdEd1lEVlIwVEFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFHMHI3DQpacnVZRENVYUErcllkUFFIV2t3Rk81NmNOdEhoVitxV3VYTlQwNGhMdTFKcWdWeEowL0VaSENYcDFYRHpvbThjDQpjcWJVMVNCZStEMVNWSStqV1RiSHRvcjIvV3c1TTQxbEx4bHRSQWFyYncwNmlNTlpwRllTeG04MkVrQWVldkEwDQpSUWh0Y0lPQW9SN2ZySnorVTNpRExMaHRtUVA3a29qSmtnVEFBL1d6U3hnUWNadllYUm5MTWE4dVRqLzlRZTViDQpzTGxvUFl0MTlabjQ2UEFqV3puMWkvb0FWbDNObUNZWklPejRVRitHT0ozcmZDS2hNNEJBbERsNDVsVCs3VEVnDQpHT3dYb2ZmMWJqUXh0S1dUVVZwUTdvMFVadCtpY2pvRGxmdXM3TERiOEg1S2c0VUpETTFGSjl6amppVVI1OHZxDQp5RDN3ZHNQYmUyWS85K1lYUUE9PQ0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQ0K
+  server.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tDQpNSUlFdmdJQkFEQU5CZ2txaGtpRzl3MEJBUUVGQUFTQ0JLZ3dnZ1NrQWdFQUFvSUJBUURScHJFdWh1TCtkeWR4DQp1M0ZtTDN6RDNXN2IrcVdXcU92UTd4V0tyNndCY2FEL3ZaUG5GQ0lDNjVtdU9McG8zc1pHalc2YmkwRzNHTkhFDQpmZEZ0eWdGeWt3NklCQVg2VXhyZERRNk92bE54aTNNelZHTDZRelNtem5nR0IvVk9hV3NvWW5jMzVRR3ZOUnVLDQo2UHhqYVpwa0lXb2VOSjNEdXQwR283bWlpMStnWEhrT3FqbUtRTVNhbG85a2k2TDZmQldrWEFzYWdSN1ozSWx0DQpPdFdEU0NoZUQ5QVF5STUwWW9MMEF4Z1A3U2QrR3plZ3lHWGFiTlFET0JHa2VueGx2YmxjWHdSeDJEUW9jRnVUDQpQdmgxcFJoM0ExSUkyNU1uRVZNWUFjUjRDZE5XMXU5VGdJSkRSK0RiZXZKMFcvSFJXVWhIZ2lkVGg5enF4bW0xDQpralM2RDA4bEFnTUJBQUVDZ2dFQUNiN1MvQ1p3TFU0bEl0UGVMQ3hDR0xSZ1I1dFJzTEhyK2s1RUpQK2xyTkNCDQp5eVF6dzBRQk83dXZiUW85TWd4RVVROFlmZVJUTUVZWC90SUVGdk45cmViWTZxallqVXBwS2RtR1J5RGc3ZkF0DQpScUlpS0FvbWk2Z2hLMU5FaTNuNkxaK215bzN3NDRVc3Rxcm90b2ROWjdaU1FaS3hFR0kzNHRhS3F4d0puSUdIDQp1SE9PdHBxUG9sVG5hNmRvTngrNGRTRkZid2Fub2R2MHJuZDFVbWJ3ajUvcnNocGpqNmZVTTRnOEl6ckY2QVV4DQpmRFVaalNROUx1Z2gwNFZDenlqNXNxMjRQVDY2RG03Z2dKUzBBSFk3aXYxMUhnMy8vZ3VZczFSNisvQ21vYkxkDQpqUHFCM2xiYytiMTUvZkowYmlQMVZCaStOZDVVSXduZGlZeDZEREpLNlFLQmdRRHEyb1ZhSVp2UFZNOHZ6K3pGDQppREJBSEZpUU11cXArY1VtSmVOZXo3UTczWGd1Q0dnS09MUDQ3aU1VeXg3cGRTUWd0b1QyeXNnY1ZMbE1kMlRpDQpLc2hNeWhGZ0pGRGl4RWZUV3FsREhJYjNlQkc5dGFCWDFzVXZPNzNYd2RJQnN2UllyTDhXS0dJWmFPdjFhbEdyDQpKL3FDSEMrRGFDZDVSY3BEWEt4djNoK0ZIUUtCZ1FEa2h6NVQ4VFFFd0MxSXpYMlFXYmNFdjk2Ujk3L3A0aUxCDQp3bXlxTU1XeUVOdVd2Z1dGMk5jTVUvbW9HSVZLUmE5TndVd1BmUFhObjM4dGhMbEFGVmdNaDVpU1B1Vkthc1I5DQpNOFZKQS9qdjB5UXZzNDc3Rkp6RytaV3UrMndJVVA1Z0lJSDU0Y041WHp3bHNsbFk5MEFUbTdDczlTZjE1UEt3DQpqNTJ1Y3lIN3FRS0JnUUNTWkFIcGk3ZUdoalBiZHJ6ODZBWkRnQ2ZJUXFTNXJRSXg1RDRWTkYwQlQreUFyU2JFDQo4RkZtb25IbG5UTTRqSmNuZVAzcW83NFd3c3o2R0JZZlVGR29ZL0J1d0ZSVzljaGJ1MUIwajh5bFp3ZVAvQzNsDQpjdTlZb09HV0lxK1g5WWVQMnFZRjFzaEhWSHA0Y0h4VnRzYlU0V0xRZzFUUHFDd0t6ektCVExEVEZRS0JnQVduDQo2eno4blVMNDFxWVVuK1R3czN6a21zZVdFQ1BqdXVSOHdWKzg4VWVrN3lwZDdaa1FjdElWU2ZxRkVOZHp2aEQ0DQpsYjlVWW1rQ1o0MWkyWXJpZkZsakNiMmszTnZvcEpCTXRiZEc1K1JYbjIrbXpBVWV6M3FGTnRVcjE5S2szb2JXDQpoeUQrRzI1bmt2K0QySDVCTUU3TDdhVjZNOUQ4SjUyREVHMyszM3B4QW9HQkFLYU5HN3p5N2Q3ekZzdmcwK1plDQpNQWF5NHlNMk9YVlpVcHpZeHE2Rk9tYXdhMkJvMitYSVlIZFJRek9mbXJlNGV1azFOdWRyU2xHU0VrYmZZVXVyDQpHN1d1VGZhSklUUW9pbXJHbW9RMmNsbUcvS1BDa09yby9IbWpUMFovYTBNcXVXUkFad1VXcDg5dTROaXBrWms1DQpTdW1zSFBJVUFCN2NOMUV4WTVrQkhsZ1gNCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0NCg==
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: public-library-system
+  name: public-library-system
+  namespace: coe892
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: public-library-system
+  template:
+    metadata:
+      labels:
+        run: public-library-system
+    spec:
+      volumes:
+        - name: ssl-cert-volume
+          secret:
+            secretName: ssl-cert
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config
+      containers:
+        - name: public-library-system-api
+          image: ninepiece2/public-library-system:api
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: ssl-cert-volume
+              mountPath: "/etc/ssl/certs"
+              readOnly: true
+          ports:
+            - containerPort: 8443
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: ASPNETCORE_URLS
+              value: "https://*:8443;http://*:8080"
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+              value: "/etc/ssl/certs/server.cert"
+            - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
+              value: "/etc/ssl/certs/server.key"
+            - name: Jwt:Issuer
+              value: "https://public-library-system.romitsagu.com"
+            - name: Jwt:Audience
+              value: "https://public-library-system.romitsagu.com"
+            - name: Jwt:Key
+              value: "ORmEqGUYyJaC2GVgGOKb5yIQR9uGe1Ca7AKbWhg772/u/Rqjme+CONBd6zUXSlmMpC9+SrLIFXyrf9XhMEKjFapDNgcwjjHr3ABaou451traWFwevwPsU9JKwrhUyMd9OQrK+XPYRpUW+jNdOrALXidF7jkGISfxLPunQld/5Nk="
+            - name: Jwt:EmailConfirmationKey
+              value: "h82XPS3edDxdEcDjHH4jv5fqBWy2ymX8lIq5LF1SImpfgcrMVWMSQvvXSK36kMErwnT7UiRYlD65cnbCm3vE+YjdOrH7G/FLII7awvVyBDV7Qx7UFRXvBMCBVtp79YtiNcfef+UaOq+argMMREAaW2WJ5lseMpxY790toU+dP/g="
+
+        - name: public-library-system-ui
+          image: ninepiece2/public-library-system:ui
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: API_BASE_URL
+              value: "https://public-library-system-api:8443"
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: "0"
+            - name: SECRET_API_KEY
+              value: "ORmEqGUYyJaC2GVgGOKb5yIQR9uGe1Ca7AKbWhg772/u/Rqjme+CONBd6zUXSlmMpC9+SrLIFXyrf9XhMEKjFapDNgcwjjHr3ABaou451traWFwevwPsU9JKwrhUyMd9OQrK+XPYRpUW+jNdOrALXidF7jkGISfxLPunQld/5Nk="
+
+        - name: public-library-system-nginx
+          image: nginx:latest
+          imagePullPolicy: Always
+          env:
+            - name: UI_HOST
+              value: "public-library-system-ui"
+          volumeMounts:
+            - name: ssl-cert-volume
+              mountPath: "/etc/ssl/certs"
+              readOnly: true
+            - name: nginx-config-volume
+              mountPath: "/etc/nginx/nginx.conf"
+              subPath: nginx.conf
+          ports:
+            - containerPort: 443
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: public-library-system-service
+  namespace: coe892
+spec:
+  selector:
+    run: public-library-system
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 443
+      nodePort: 30003
+  type: LoadBalancer

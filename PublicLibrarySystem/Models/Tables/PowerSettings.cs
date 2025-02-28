@@ -1,8 +1,0 @@
-﻿namespace PublicLibrarySystem.Models
-{
-    public class PowerSettings
-    {
-        public string Key { get; set; }
-        public string Value { get; set; }
-    }
-}

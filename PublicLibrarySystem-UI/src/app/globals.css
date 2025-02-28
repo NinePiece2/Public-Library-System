@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Poppins', sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body, h1, p {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  text-align: center;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--background);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  padding: 20px;
+  background: #121212;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  color: var(--foreground);
+  margin: 20px auto;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #4CAF50;
+}
+
+p {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+    font-size: 14px;
+  }
+  h1 {
+    font-size: 18px;
+  }
+}
+
+label {
+  margin-right: 10px;
+}
+
+input {
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+section {
+  padding: 30px;
+}
+
+a:hover{
+  color: #4CAF50;
+}
+
+input{
+  color: black;
+}
+
+select {
+  color: black;
+}
+
+textarea {
+  color: black;
+}
