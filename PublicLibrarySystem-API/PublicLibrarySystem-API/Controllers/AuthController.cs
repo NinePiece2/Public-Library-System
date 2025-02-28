@@ -49,7 +49,6 @@ namespace PublicLibrarySystem_API.Controllers
             // Hash the password securely
             user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
 
             string confirmationLink = $"{_configuration["UIBaseURL"]}/auth/confirmemail?token={WebUtility.UrlEncode(GenerateJwtConfirmationToken(user))}";
 
@@ -119,6 +118,8 @@ namespace PublicLibrarySystem_API.Controllers
                 ";
 
             _emailService.SendEmail(user.Email, "Confrim your Email", null, htmlBody, false, null, null);
+            await _context.SaveChangesAsync();
+
             return Ok(new { Message = "User registered successfully" });
         }
 
