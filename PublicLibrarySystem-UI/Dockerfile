@@ -17,8 +17,6 @@ RUN npm ci --only=production
 # Copy the build output (assuming a Next.js app using .next and public folders)
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
-# (Optional: copy any other necessary runtime files, e.g. next.config.js)
-COPY --from=build /app/next.config.js ./
 
 EXPOSE 3000
 
