@@ -1,10 +1,10 @@
 FROM node:18-alpine AS build
 
 WORKDIR /app
-COPY UI/package.json UI/package-lock.json ./
+COPY PublicLibrarySystem-UI/package.json PublicLibrarySystem-UI/package-lock.json ./
 RUN npm install
 
-COPY UI .
+COPY PublicLibrarySystem-UI .
 RUN npm run build
 
 FROM node:18-alpine AS deploy
