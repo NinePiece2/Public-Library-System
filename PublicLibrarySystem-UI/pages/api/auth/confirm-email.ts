@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { protectedProxyRequest } from '../../../lib/protectedProxy';
 
-type Data = { message?: string; token?: string } | any;
+type Data = { message?: string; token?: string } | Record<string, unknown>;
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,8 +33,11 @@ export default async function handler(
 
     const data = await apiRes.json();
     return res.status(apiRes.status).json(data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    return res.status(500).json({ message: error.message });
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Unknown error occurred" });
   }
 }

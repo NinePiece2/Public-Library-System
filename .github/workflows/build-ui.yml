@@ -21,15 +21,15 @@ jobs:
               username: ${{ secrets.DOCKER_USERNAME }}
               password: ${{ secrets.DOCKERHUB_TOKEN }}
   
-          - name: Create and use unique Docker context
-            run: |
-              docker context create context-${{ github.run_id }}-${{ github.job }} || true
-              docker context use context-${{ github.run_id }}-${{ github.job }}
+        #   - name: Create and use unique Docker context
+        #     run: |
+        #       docker context create context-${{ github.run_id }}-${{ github.job }} || true
+        #       docker context use context-${{ github.run_id }}-${{ github.job }}
   
           - name: Set up Docker Buildx
             uses: docker/setup-buildx-action@v3
             with:
-              endpoint: context-${{ github.run_id }}-${{ github.job }}
+             # endpoint: context-${{ github.run_id }}-${{ github.job }}
               driver: docker-container
               
           - name: Build and push
