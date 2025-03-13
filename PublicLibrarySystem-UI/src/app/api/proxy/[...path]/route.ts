@@ -39,42 +39,53 @@ export async function DELETE(req: NextRequest, context: RouteContext) {
  * Helper function to authenticate and proxy requests to the .NET API.
  */
 async function proxyRequest(
-  req: NextRequest,
-  params: { path: string[] },
-  method: string
-) {
-  const pathSegments = params.path;
+    req: NextRequest,
+    params: { path: string[] },
+    method: string
+  ) {
+    const pathSegments = params.path;
+    
+    if (!pathSegments || pathSegments.length === 0) {
+      return NextResponse.json({ error: "Invalid API path" }, { status: 400 });
+    }
   
-  if (!pathSegments || pathSegments.length === 0) {
-    return NextResponse.json({ error: "Invalid API path" }, { status: 400 });
-  }
-
-  try {
-    const url = `${API_BASE_URL}/${pathSegments.join("/")}`;
-
-    // Prepare request options
-    const options: RequestInit = {
-      method,
-      headers: Object.fromEntries(req.headers.entries()),
-    };
-
-    // Include body for non-GET requests
-    if (method !== "GET") {
-      options.body = await req.text();
+    try {
+      const url = `${API_BASE_URL}/${pathSegments.join("/")}`;
+  
+      // Filter headers to remove disallowed ones
+      const filteredHeaders = filterHeaders(req.headers);
+  
+      // Prepare request options
+      const options: RequestInit = {
+        method,
+        headers: filteredHeaders,
+      };
+  
+      // Include body for non-GET requests
+      if (method !== "GET") {
+        options.body = await req.text();
+      }
+  
+      const response = await protectedProxyRequest(url, options);
+      const contentType = response.headers.get("content-type");
+  
+      if (contentType?.includes("application/json")) {
+        const data = await response.json();
+        return NextResponse.json(data, { status: response.status });
+      } else {
+        const text = await response.text();
+        return new NextResponse(text, { status: response.status });
+      }
+    } catch (error) {
+      console.error("Proxy error:", error);
+      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
-
-    const response = await protectedProxyRequest(url, options);
-    const contentType = response.headers.get("content-type");
-
-    if (contentType?.includes("application/json")) {
-      const data = await response.json();
-      return NextResponse.json(data, { status: response.status });
-    } else {
-      const text = await response.text();
-      return new NextResponse(text, { status: response.status });
-    }
-  } catch (error) {
-    console.error("Proxy error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
-}
+  
+  function filterHeaders(headers: Headers): Record<string, string> {
+    const disallowed = ['connection', 'host', 'keep-alive', 'proxy-connection', 'transfer-encoding', 'upgrade'];
+    return Object.fromEntries(
+      Array.from(headers.entries()).filter(([key]) => !disallowed.includes(key.toLowerCase()))
+    );
+  }
+  
