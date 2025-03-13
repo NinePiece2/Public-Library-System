@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { protectedProxyRequest } from "../../../../../lib/protectedProxy";
 
 const API_BASE_URL = process.env.API_BASE_URL;
-if (!API_BASE_URL) {
-  throw new Error("API_BASE_URL not configured");
-}
+// if (!API_BASE_URL) {
+//   throw new Error("API_BASE_URL not configured");
+// }
 
 type RouteContext = {
   params: Promise<{ path: string[] }>;
