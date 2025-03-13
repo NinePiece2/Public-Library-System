@@ -22,8 +22,10 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/auth/login") ||
     pathname.startsWith("/auth/register") ||
     pathname.startsWith("/auth/confirmemail") ||
-    pathname.startsWith("/api/") ||
-    pathname.startsWith("/_next")
+    pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon.ico") ||
+    pathname.startsWith("/public")
   ) {
     return NextResponse.next();
   }
@@ -48,7 +50,7 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-// Optional: limit middleware to certain paths.
-export const config = {
-  matcher: ["/((?!api/).*)"],
-};
+// // Optional: limit middleware to certain paths.
+// export const config = {
+//   matcher: ["/((?!api/).*)"],
+// };
