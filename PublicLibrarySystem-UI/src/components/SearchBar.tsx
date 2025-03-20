@@ -1,31 +1,44 @@
-import { Button } from "./Button";
-import { InputField } from "./InputField";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Button from "./Button"; // Ensure it's correctly exported
+import InputField from "./InputField"; // Ensure it's correctly exported
 
-export default function SearchBar({ search, setSearch, filter, setFilter }) {
-return (
+interface SearchBarProps {
+    search: string;
+    setSearch: (value: string) => void;
+    filter: string;
+    setFilter: (value: string) => void;
+}
+
+export default function SearchBar({ search, setSearch, filter, setFilter }: SearchBarProps) {
+    return (
     <div className="w-full max-w-lg bg-white p-6 rounded-xl shadow-md">
-    <InputField
+        <InputField
+        label="Search"
         type="text"
         placeholder="Search for books..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="w-full p-3 border rounded-md"
     />
-    <div className="flex justify-between mt-4">
-        <Select value={filter} onValueChange={setFilter}>
-        <SelectTrigger className="w-full">
-            <SelectValue placeholder="Filter by" />
-        </SelectTrigger>
-        <SelectContent>
-            <SelectItem value="title">Title</SelectItem>
-            <SelectItem value="author">Author</SelectItem>
-            <SelectItem value="genre">Genre</SelectItem>
-            <SelectItem value="year">Year</SelectItem>
-        </SelectContent>
-        </Select>
+
+
+        {/* Native <select> dropdown */}
+        <div className="flex justify-between items-center mt-4 gap-4">
+        <select 
+            value={filter} 
+            onChange={(e) => setFilter(e.target.value)}
+            className="w-full p-2 border rounded-md"
+        >
+            <option value="">Filter by</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="genre">Genre</option>
+            <option value="year">Year</option>
+        </select>
+
+        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+            Search
+        </Button>
+        </div>
     </div>
-    <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white">Search</Button>
-    </div>
-);
+    );
 }
