@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PublicLibrarySystem_API.Models;
 using PublicLibrarySystem_API.Data.Tables;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace PublicLibrarySystem_API.Data
 {
@@ -33,11 +34,17 @@ namespace PublicLibrarySystem_API.Data
                 entity.HasKey(e => e.Id);
             });
 
-             builder.Entity<Reservation>(entity =>
+            builder.Entity<Reservation>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.DueDate).IsRequired();
                 entity.Property(e => e.IsExpired).HasDefaultValue(false);
+            });
+
+            builder.Entity<Book>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
             });
 
         }

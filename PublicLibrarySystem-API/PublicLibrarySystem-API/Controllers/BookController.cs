@@ -5,11 +5,13 @@ using PublicLibrarySystem_API.Data;
 using PublicLibrarySystem_API.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PublicLibrarySystem_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BooksController : ControllerBase
     {
         private readonly PublicLibrarySystemDBContext _context;
