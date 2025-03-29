@@ -1,4 +1,4 @@
-namespace PublicLibrarySystem_API.Models
+namespace PublicLibrarySystem_API.Data.Tables
 {
     public class Book
     {
@@ -7,5 +7,6 @@ namespace PublicLibrarySystem_API.Models
         public string Author { get; set; }
         public string ISBN { get; set; }
         public bool IsAvailable { get; set; } = true;
+        public DateTime PublishedDate {get; set; }
     }
 }

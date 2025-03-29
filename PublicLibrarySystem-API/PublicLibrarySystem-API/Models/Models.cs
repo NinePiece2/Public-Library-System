@@ -12,4 +12,16 @@
         public string EmailOrUsername { get; set; }
         public string Password { get; set; }
     }
+
+    public class CreateReservationRequest
+    {
+        public DateTime DueDate { get; set; }
+    }
+
+    public class UpdateReservationRequest
+    {
+        public DateTime? DueDate { get; set; }
+        public bool? IsExpired { get; set; }
+    }
+
 }
