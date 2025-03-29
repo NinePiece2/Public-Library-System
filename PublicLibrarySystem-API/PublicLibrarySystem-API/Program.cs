@@ -75,6 +75,7 @@ namespace PublicLibrarySystem_API
             builder.Services.AddSingleton<ITokenService, TokenService>();
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            builder.Services.AddHostedService<ReservationCleanupService>();
 
             var app = builder.Build();
 
