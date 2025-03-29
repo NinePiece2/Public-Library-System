@@ -32,7 +32,7 @@ public class ReservationCleanupService : BackgroundService
                 // Mark each reservation as expired
                 foreach (var reservation in expiredReservations)
                 {
-                    reservation.IsExpired(); 
+                    reservation.MarkExpired(); 
                 }
 
                 // Save changes after marking them as expired

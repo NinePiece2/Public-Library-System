@@ -1,5 +1,7 @@
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PublicLibrarySystem_API.Data;
+using PublicLibrarySystem_API.Data.Tables;
 using PublicLibrarySystem_API.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ namespace PublicLibrarySystem_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReservationController : ControllerBase
     {
         private readonly PublicLibrarySystemDBContext _dbContext;
@@ -91,7 +94,7 @@ namespace PublicLibrarySystem_API.Controllers
             if (reservation == null)
                 return NotFound();
 
-            reservation.MarkAsExpired(); // Using the method in the Reservation class
+            reservation.MarkExpired(); // Using the method in the Reservation class
             await _dbContext.SaveChangesAsync();
 
             return NoContent();
