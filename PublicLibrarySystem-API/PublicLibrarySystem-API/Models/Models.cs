@@ -24,4 +24,10 @@
         public bool? IsExpired { get; set; }
     }
 
+    public class UserRoleUpdateRequest
+    {
+        public Guid UserID { get; set; }
+        public string role { get; set; }
+    }
+
 }

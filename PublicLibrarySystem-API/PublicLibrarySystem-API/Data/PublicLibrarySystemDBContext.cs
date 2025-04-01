@@ -17,6 +17,8 @@ namespace PublicLibrarySystem_API.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -45,6 +47,16 @@ namespace PublicLibrarySystem_API.Data
             {
                 entity.HasKey(e => e.Id);
 
+            });
+
+            builder.Entity<Role>(entity =>
+            {
+                entity.HasKey(e => e.ID);
+            });
+
+            builder.Entity<UserRole>(entity =>
+            {
+                entity.HasKey(e => e.ID);
             });
 
         }

@@ -54,6 +54,11 @@ namespace PublicLibrarySystem_API.Controllers
             // Hash the password securely
             user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
             _context.Users.Add(user);
+            _context.UserRoles.Add(new UserRole
+            {
+                UserID = user.Id,
+                RoleID = _context.Roles.FirstOrDefault(r => r.Name == "User").ID
+            });
 
             string confirmationLink = $"{_configuration["UIBaseURL"]}/auth/confirmemail?token={WebUtility.UrlEncode(GenerateJwtConfirmationToken(user))}";
 
@@ -187,10 +192,19 @@ namespace PublicLibrarySystem_API.Controllers
         private string GenerateJwtToken(User user)
         {
             var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+            var roles = _context.UserRoles
+                .Where(ur => ur.UserID == user.Id)
+                .Select(ur => ur.Role.Name)
+                .ToList();
+
+            var rolesString = string.Join(",", roles);
+            
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("userId", user.Id.ToString()),
+                new Claim("role", rolesString),
                 // Add additional claims as needed
             };
 

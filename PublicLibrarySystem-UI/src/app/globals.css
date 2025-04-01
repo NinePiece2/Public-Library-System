@@ -101,3 +101,11 @@ select {
 textarea {
   color: black;
 }
+
+ul{
+  color: black;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

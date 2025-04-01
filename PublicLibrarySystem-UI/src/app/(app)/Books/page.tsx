@@ -76,7 +76,7 @@ export default function Home() {
   return (
     <div className="80vh p-8">
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-gray-100">
-        Recommended Books
+        All Books
       </h1>
       <div ref={containerRef} className="relative">
         {/* Carousel container */}

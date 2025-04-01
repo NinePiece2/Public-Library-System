@@ -7,7 +7,9 @@ export interface InputFieldProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
+  disabled?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -17,6 +19,8 @@ const InputField: React.FC<InputFieldProps> = ({
   value,
   onChange,
   required = false,
+  disabled = false,
+  style,
   className = "",
 }) => {
   return (
@@ -28,6 +32,8 @@ const InputField: React.FC<InputFieldProps> = ({
         value={value}
         onChange={onChange}
         required={required}
+        disabled={disabled}
+        style={style}
         className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300 ${className}`}
       />
     </div>

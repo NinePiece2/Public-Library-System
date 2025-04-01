@@ -20,7 +20,7 @@ export default function LogoutButton() {
   };
 
   return (
-    <Button onClick={handleLogout} className="inline-flex items-center border-0 py-1 px-3 focus:outline-none rounded text-base mt-4 md:mt-0 cursor-pointer">
+    <Button defaultColor="" onClick={handleLogout} className="inline-flex items-center border-0 py-1 px-3 focus:outline-none rounded text-base mt-4 md:mt-0 cursor-pointer">
       Logout
       <svg
         fill="none"

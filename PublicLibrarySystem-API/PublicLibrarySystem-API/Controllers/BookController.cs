@@ -40,8 +40,28 @@ namespace PublicLibrarySystem_API.Controllers
             }
         }
 
+        [HttpGet("GetBook/{*id}")]
+        public async Task<ActionResult<Book>> GetBook(int id)
+        {
+            try
+            {
+                Console.WriteLine($"Fetching book with ID: {id}");
+                var book = await _context.Books.FindAsync(id);
+                if (book == null)
+                {
+                    return NotFound($"Book with ID {id} not found.");
+                }
+                return Ok(book);
+            }
+            catch (Exception ex)
+            {
+                // Log the error (you can use a logger here)
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [HttpPost]
-        public async Task<ActionResult<Book>> AddBook(Book book)
+        public async Task<ActionResult<Book>> AddBook([FromBody]Book book)
         {
             if (book == null)
             {

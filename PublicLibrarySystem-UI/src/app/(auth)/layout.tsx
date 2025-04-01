@@ -1,13 +1,4 @@
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
 import "../globals.css";
-
-const poppins = Poppins({ weight: "400", subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Smart Library System - Auth",
-  description: "Login or Register to Smart Library System",
-};
 
 export default function AuthLayout({
   children,
@@ -15,10 +6,8 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${poppins.className} antialiased`}>
+      <div>
         {children}
-      </body>
-    </html>
+      </div>
   );
 }

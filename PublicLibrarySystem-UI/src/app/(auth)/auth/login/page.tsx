@@ -10,6 +10,7 @@ const Login = () => {
   const [emailOrUsername, setEmailOrUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -19,9 +20,9 @@ const Login = () => {
     }
   }, [router]);
 
-
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     setError(null);
     try {
       const res = await fetch("/api/auth/login", {
@@ -45,6 +46,8 @@ const Login = () => {
     } catch (err) {
       console.error("Login error:", err);
       setError("Login error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -60,6 +63,7 @@ const Login = () => {
             value={emailOrUsername}
             onChange={(e) => setEmailOrUsername(e.target.value)}
             required
+            disabled={isLoading}
           />
           <InputField
             label="Password"
@@ -68,13 +72,45 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={isLoading}
           />
           <div className="flex space-x-4">
-            <Button type="submit" className="bg-blue-600 text-white hover:bg-blue-700 flex-1">
-              Login
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="bg-blue-600 text-white hover:bg-blue-700 flex-1"
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    ></path>
+                  </svg>
+                  Logging in...
+                </div>
+              ) : (
+                "Login"
+              )}
             </Button>
             <Button
               type="button"
+              disabled={isLoading}
               className="bg-gray-300 text-gray-800 hover:bg-gray-400 flex-1"
               onClick={() => router.push("/auth/register")}
             >

@@ -1,25 +1,37 @@
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+"use client";
+import { useState, useEffect } from "react";
 import "../globals.css";
-import Link from 'next/link';
+import Link from "next/link";
 import LogoutButton from "@/components/LogoutButton";
-
-const poppins = Poppins({ weight: "400", subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Public Library System",
-  description: "Public Library System",
-};
+import SearchBar from "@/components/SearchBar";
+import Cookies from "js-cookie";
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Get the userRole cookie on the client
+    const role = Cookies.get("userRole");
+    setUserRole(role || null);
+  }, []);
+
   return (
-    <html lang="en">
-      <body className={`${poppins.className} antialiased`}>
-        <header className="text-gray-600 body-font">
-          <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-            <Link href="/" style={{color: "#4CAF50"}} className="flex title-font font-medium items-center mb-4 md:mb-0">
+    <div>
+      <header className="text-gray-600 body-font">
+        <div className="container mx-auto p-5">
+          {/* Top row: logo, nav, logout */}
+          <div className="flex flex-wrap items-center">
+            <Link
+              href="/"
+              style={{ color: "#4CAF50" }}
+              className="flex title-font font-medium items-center mb-4 md:mb-0"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -34,17 +46,37 @@ export default function RootLayout({
               </svg>
               <span className="ml-3 text-xl">Public Library System</span>
             </Link>
-            <nav className="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400 flex flex-wrap items-center text-base justify-center">
-              <Link href="/" className="mr-5 hover:text-gray-900">First Link</Link>
-              <Link href="/" className="mr-5 hover:text-gray-900">Second Link</Link>
-              <Link href="/" className="mr-5 hover:text-gray-900">Third Link</Link>
-              <Link href="/" className="mr-5 hover:text-gray-900">Fourth Link</Link>
+            <nav className="flex flex-wrap items-center text-base justify-center md:border-l md:border-gray-40 md:mr-auto md:ml-4 md:py-1 md:pl-4">
+              <Link href="/" className="mr-5 hover:text-gray-900">
+                Home
+              </Link>
+              <Link href="/Books" className="mr-5 hover:text-gray-900">
+                Books
+              </Link>
+              <Link href="/Reservations" className="mr-5 hover:text-gray-900">
+                Reservations
+              </Link>
+              {userRole?.toLowerCase() === "admin" && (
+                <Link href="/Admin" className="mr-5 hover:text-gray-900">
+                  Admin
+                </Link>
+              )}
             </nav>
             <LogoutButton />
           </div>
-        </header>
-        {children}
-      </body>
-    </html>
+
+          {/* Second row: search bar */}
+          <div className="mt-4">
+            <SearchBar
+              search={search}
+              setSearch={setSearch}
+              filter={filter}
+              setFilter={setFilter}
+            />
+          </div>
+        </div>
+      </header>
+      {children}
+    </div>
   );
 }

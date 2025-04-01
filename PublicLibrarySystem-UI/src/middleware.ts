@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { decodeJwt } from "jose";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-    // Retrieve the token cookie
   const tokenCookie = request.cookies.get("token");
-  // If user is already logged in and is visiting public pages, redirect them to the root.
+
   if (
     (pathname.startsWith("/auth/login") ||
       pathname.startsWith("/auth/register") ||
@@ -17,7 +17,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(rootUrl);
   }
 
-  // Exclude public routes from authentication (e.g., login, register, API routes)
   if (
     pathname.startsWith("/auth/login") ||
     pathname.startsWith("/auth/register") ||
@@ -31,26 +30,52 @@ export function middleware(request: NextRequest) {
   }
 
   if (!tokenCookie) {
-    // If not logged in, redirect to login
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/auth/login";
     return NextResponse.redirect(loginUrl);
   }
 
+  let isAdmin = false;
+  try {
+    const payload = decodeJwt(tokenCookie.value);
+    if (payload.role && typeof payload.role === "string") {
+      const roles = payload.role.split(",").map((role) => role.trim());
+      isAdmin = roles.some((role) => role.toLowerCase() === "admin");
+    }
+  } catch (error) {
+    console.error("JWT decoding failed", error);
+  }
+
+
   const response = NextResponse.next();
 
+  // Refresh the token cookie (if needed)
   response.cookies.set("token", tokenCookie.value, {
     path: "/",
-    maxAge: 60 * 60 * 24, // 24 hours
+    maxAge: 60 * 60 * 24,
     secure: true,
     httpOnly: true,
     sameSite: "strict",
   });
 
+  // Set a non-httpOnly cookie for the role
+  response.cookies.set("userRole", isAdmin ? "admin" : "user", {
+    path: "/",
+    maxAge: 60 * 60 * 24,
+    // Do NOT mark as httpOnly so that client code can read it
+  });
+
+  if (
+    (pathname.startsWith("/Admin") && !isAdmin)
+  ) {
+    const rootUrl = request.nextUrl.clone();
+    rootUrl.pathname = "/";
+    return NextResponse.redirect(rootUrl);
+  }
+
   return response;
 }
 
-// // Optional: limit middleware to certain paths.
-// export const config = {
-//   matcher: ["/((?!api/).*)"],
-// };
+export const config = {
+  matcher: ["/((?!api/).*)"],
+};
