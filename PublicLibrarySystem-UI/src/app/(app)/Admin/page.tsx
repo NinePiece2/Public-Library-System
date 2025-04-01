@@ -46,7 +46,7 @@ interface PendingReservation {
   book: Book;
 }
 
-// For pending returns we assume a similar interface.
+// Instead of an empty interface, use a type alias for pending returns
 type PendingReturn = PendingReservation;
 
 export default function AdminPage() {
@@ -209,7 +209,8 @@ export default function AdminPage() {
       );
       if (res.ok) {
         alert("Reservation marked as claimed!");
-        await fetchPendingReservations();
+        // Refresh both pending reservations and returns
+        await Promise.all([fetchPendingReservations(), fetchPendingReturns()]);
       } else {
         alert("Failed to mark reservation as claimed");
       }
@@ -230,7 +231,8 @@ export default function AdminPage() {
       );
       if (res.ok) {
         alert("Reservation marked as returned!");
-        await fetchPendingReturns();
+        // Refresh both pending reservations and returns
+        await Promise.all([fetchPendingReservations(), fetchPendingReturns()]);
       } else {
         alert("Failed to mark reservation as returned");
       }
@@ -742,8 +744,8 @@ export default function AdminPage() {
                     {new Date(item.reservation.reservationDate).toLocaleDateString()}
                   </div>
                   <div>
-                    <strong>Expires:</strong>{" "}
-                    {new Date(item.reservation.expirationDate).toLocaleDateString()}
+                    <strong>Expires (Due Date):</strong>{" "}
+                    {new Date(item.reservation.dueDate).toLocaleDateString()}
                   </div>
                   <div>
                     <strong>Claimed:</strong>{" "}

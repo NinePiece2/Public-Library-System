@@ -11,6 +11,7 @@ namespace PublicLibrarySystem_API.Data.Tables
         public DateTime? DueDate {get; set; }
         public bool IsClaimed { get; set; } = false;
         public bool IsReturned { get; set; } = false;
+        public DateTime? ReturnedDate { get; set; } = null;
 
         public void MarkExpired()
         {

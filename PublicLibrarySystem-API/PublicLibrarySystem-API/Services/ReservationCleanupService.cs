@@ -26,7 +26,7 @@ public class ReservationCleanupService : BackgroundService
 
                 // Get all expired reservations (those with a due date before now and not already expired)
                 var expiredReservations = await dbContext.Reservations
-                    .Where(r => r.DueDate < DateTime.UtcNow && !r.IsExpired)
+                    .Where(r => (r.DueDate < DateTime.UtcNow || r.DueDate == null) && !r.IsExpired && !r.IsReturned && r.ExpirationDate < DateTime.UtcNow)
                     .ToListAsync();
 
                 // Mark each reservation as expired

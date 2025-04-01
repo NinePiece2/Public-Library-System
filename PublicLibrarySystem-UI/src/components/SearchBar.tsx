@@ -65,11 +65,19 @@ export default function SearchBar({ search, setSearch }: SearchBarProps) {
     router.push(`/Book?id=${book.id}`);
   };
 
-  // Navigate to the Search page when the search button is pressed.
+  // Navigate to the Search page when the search button or Enter key is pressed.
   const handleSearch = () => {
     // Clear the search input first.
     setSearch("");
-    router.push(`/Search?q=${encodeURIComponent(search)}`);
+    router.push(`/Search?query=${encodeURIComponent(search)}`);
+  };
+
+  // Handle Enter key on the input field
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSearch();
+    }
   };
 
   return (
@@ -82,6 +90,7 @@ export default function SearchBar({ search, setSearch }: SearchBarProps) {
               placeholder="Search for books..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="w-full py-2 px-3 pr-10 border rounded-md border-gray-600"
               style={{ color: "white", margin: "0" }}
             />

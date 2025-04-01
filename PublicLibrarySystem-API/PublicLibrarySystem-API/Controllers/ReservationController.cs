@@ -110,8 +110,8 @@ namespace PublicLibrarySystem_API.Controllers
                 return NotFound();
 
             reservation.IsClaimed = false;
-            reservation.DueDate = null;
             reservation.IsReturned = true;
+            reservation.ReturnedDate = DateTime.UtcNow;
 
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == reservation.BookId);
             if (book != null)
@@ -122,6 +122,31 @@ namespace PublicLibrarySystem_API.Controllers
 
             await _dbContext.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpGet("GetUserReservations")]
+        public IActionResult GetUserReservations([FromQuery]Guid userId)
+        {
+            var reservations = _dbContext.Reservations
+                .Where(r => r.UserId == userId)
+                .ToList();
+
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+                return NotFound();
+
+            var books = _dbContext.Books
+                .Where(b => reservations.Select(r => r.BookId).Contains(b.Id))
+                .ToList();
+
+            var reservationsWithDetails = reservations.Select(r => new
+            {
+                Reservation = r,
+                User = new { user.Id, user.Email, user.Username },
+                Book = books.FirstOrDefault(b => b.Id == r.BookId)
+            }).ToList();
+
+            return Ok(reservationsWithDetails);
         }
 
 
