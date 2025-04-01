@@ -39,8 +39,8 @@ namespace PublicLibrarySystem_API.Data
             builder.Entity<Reservation>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.DueDate).IsRequired();
-                entity.Property(e => e.IsExpired).HasDefaultValue(false);
+                // entity.Property(e => e.DueDate).IsRequired();
+                // entity.Property(e => e.IsExpired).HasDefaultValue(false);
             });
 
             builder.Entity<Book>(entity =>

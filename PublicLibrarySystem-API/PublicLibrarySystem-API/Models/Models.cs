@@ -15,7 +15,8 @@
 
     public class CreateReservationRequest
     {
-        public DateTime DueDate { get; set; }
+        public Guid UserId { get; set; }
+        public int BookId { get; set; }
     }
 
     public class UpdateReservationRequest

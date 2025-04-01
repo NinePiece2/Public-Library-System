@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import Button from "@/components/Button";
+import Cookies from "js-cookie";
 
 interface Book {
   id: number;
@@ -58,11 +59,49 @@ export default function BookPageContent() {
   }, [id]);
 
   // Helper function to display values or "Unknown" if data is missing
-  const displayValue = (value: string | number | null | undefined | boolean) => {
-    if (value == null || value === "" || (typeof value === "number" && isNaN(value))) {
+  const displayValue = (
+    value: string | number | null | undefined | boolean
+  ) => {
+    if (
+      value == null ||
+      value === "" ||
+      (typeof value === "number" && isNaN(value))
+    ) {
       return "Unknown";
     }
     return value.toString();
+  };
+
+  // Handler for reserving the book
+  const handleReserve = async () => {
+    // Get userID from cookie
+    const userId = Cookies.get("userID");
+    if (!userId) {
+      alert("User not logged in.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/proxy/api/reservation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userId,
+          bookId: book?.id, // book id from the page
+        }),
+      });
+      if (res.ok) {
+        alert("Book reserved for 24 hours!");
+        // Update the local state so the button shows that the book is now unavailable
+        if (book) {
+          setBook({ ...book, isAvailable: false });
+        }
+      } else {
+        alert("Failed to reserve book.");
+      }
+    } catch (error) {
+      console.error("Error reserving book:", error);
+      alert("Error reserving book.");
+    }
   };
 
   if (loading) {
@@ -122,22 +161,28 @@ export default function BookPageContent() {
         {/* Book Details */}
         <div className="flex-grow text-gray-700 dark:text-gray-300 space-y-6">
           <p className="text-2xl" style={{ fontSize: "1.25rem" }}>
-            <span className="font-semibold">Author:</span> {displayValue(book.author)}
+            <span className="font-semibold">Author:</span>{" "}
+            {displayValue(book.author)}
           </p>
           <p className="text-2xl" style={{ fontSize: "1.25rem" }}>
-            <span className="font-semibold">ISBN:</span> {displayValue(book.isbn)}
+            <span className="font-semibold">ISBN:</span>{" "}
+            {displayValue(book.isbn)}
           </p>
           <p className="text-2xl" style={{ fontSize: "1.25rem" }}>
-            <span className="font-semibold">Genre:</span> {displayValue(book.genre)}
+            <span className="font-semibold">Genre:</span>{" "}
+            {displayValue(book.genre)}
           </p>
           <p className="text-2xl" style={{ fontSize: "1.25rem" }}>
-            <span className="font-semibold">Publisher:</span> {displayValue(book.publisher)}
+            <span className="font-semibold">Publisher:</span>{" "}
+            {displayValue(book.publisher)}
           </p>
           <p className="text-2xl" style={{ fontSize: "1.25rem" }}>
-            <span className="font-semibold">Pages:</span> {displayValue(book.pages)}
+            <span className="font-semibold">Pages:</span>{" "}
+            {displayValue(book.pages)}
           </p>
           <p className="text-2xl" style={{ fontSize: "1.25rem" }}>
-            <span className="font-semibold">Language:</span> {displayValue(book.language)}
+            <span className="font-semibold">Language:</span>{" "}
+            {displayValue(book.language)}
           </p>
           <p className="text-2xl" style={{ fontSize: "1.25rem" }}>
             <span className="font-semibold">Published Date:</span>{" "}
@@ -165,7 +210,7 @@ export default function BookPageContent() {
             {book.isAvailable ? (
               <Button
                 className="px-8 py-4 text-2xl font-semibold rounded-lg transition-colors"
-                onClick={() => alert("Book reserved for 24 hours!")}
+                onClick={handleReserve}
               >
                 Reserve Book for 24 Hours
               </Button>

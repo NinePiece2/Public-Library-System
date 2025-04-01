@@ -36,11 +36,16 @@ export async function middleware(request: NextRequest) {
   }
 
   let isAdmin = false;
+  let userID = "";
   try {
     const payload = decodeJwt(tokenCookie.value);
     if (payload.role && typeof payload.role === "string") {
       const roles = payload.role.split(",").map((role) => role.trim());
       isAdmin = roles.some((role) => role.toLowerCase() === "admin");
+    }
+
+    if (payload.userId && typeof payload.userId === "string") {
+      userID = payload.userId;
     }
   } catch (error) {
     console.error("JWT decoding failed", error);
@@ -60,6 +65,12 @@ export async function middleware(request: NextRequest) {
 
   // Set a non-httpOnly cookie for the role
   response.cookies.set("userRole", isAdmin ? "admin" : "user", {
+    path: "/",
+    maxAge: 60 * 60 * 24,
+    // Do NOT mark as httpOnly so that client code can read it
+  });
+
+  response.cookies.set("userID", userID, {
     path: "/",
     maxAge: 60 * 60 * 24,
     // Do NOT mark as httpOnly so that client code can read it
