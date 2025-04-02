@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 interface Book {
   id: number;
@@ -24,6 +25,8 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [visibleCount, setVisibleCount] = useState<number>(4);
 
+  const userId = Cookies.get("userID");
+
   // Reference to the carousel container
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +39,7 @@ export default function Home() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const res = await fetch("/api/proxy/api/Books");
+        const res = await fetch(`/api/proxy/api/Books/GetRecommendedBooks?userId=${userId}`);
         const data: Book[] = await res.json();
         setBooks(data);
       } catch (error) {

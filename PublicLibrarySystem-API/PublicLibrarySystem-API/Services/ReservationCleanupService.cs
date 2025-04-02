@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using PublicLibrarySystem_API.Data;
 using Microsoft.EntityFrameworkCore;
+using PublicLibrarySystem_API.Data.Tables;
 
 public class ReservationCleanupService : BackgroundService
 {
@@ -24,15 +25,20 @@ public class ReservationCleanupService : BackgroundService
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<PublicLibrarySystemDBContext>();
 
-                // Get all expired reservations (those with a due date before now and not already expired)
+                // Get all expired reservations (those with a ExpirationDate before now and not already expired)
                 var expiredReservations = await dbContext.Reservations
-                    .Where(r => (r.DueDate < DateTime.UtcNow || r.DueDate == null) && !r.IsExpired && !r.IsReturned && r.ExpirationDate < DateTime.UtcNow)
+                    .Where(r => !r.IsClaimed && !r.IsExpired && !r.IsReturned && r.ExpirationDate < DateTime.UtcNow)
                     .ToListAsync();
 
                 // Mark each reservation as expired
                 foreach (var reservation in expiredReservations)
                 {
                     reservation.MarkExpired(); 
+                    Book book = await dbContext.Books.FindAsync(reservation.BookId);
+                    if (book != null)
+                    {
+                        book.IsAvailable = true; // Mark the book as available
+                    }
                 }
 
                 // Save changes after marking them as expired
@@ -43,8 +49,8 @@ public class ReservationCleanupService : BackgroundService
                 await dbContext.SaveChangesAsync();
             }
 
-            // Delay the next cleanup check by 1 hour
-            await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
+            // Delay the next cleanup check by 10 minutes
+            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
         }
     }
 }

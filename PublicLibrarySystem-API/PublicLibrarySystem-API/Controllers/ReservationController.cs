@@ -149,6 +149,41 @@ namespace PublicLibrarySystem_API.Controllers
             return Ok(reservationsWithDetails);
         }
 
+        [HttpPut("ExtendReservation/{reservationId}")]
+        public async Task<IActionResult> ExtendReservation(int reservationId)
+        {
+            var reservation = await _dbContext.Reservations.FindAsync(reservationId);
+            if (reservation == null)
+            {
+                return NotFound("Reservation not found.");
+            }
+
+            if (!reservation.DueDate.HasValue)
+            {
+                return BadRequest("Reservation due date is not set.");
+            }
+
+            // Validation 1: Cannot extend an expired reservation.
+            if (reservation.DueDate.Value < DateTime.UtcNow)
+            {
+                return BadRequest("Cannot extend an expired reservation.");
+            }
+            
+            // Validation 2: Can't extend a reservation if its due date is not close (within 2 days).
+            // Here we check if the due date is more than 2 days from now.
+            if (reservation.DueDate.Value > DateTime.UtcNow.AddDays(2))
+            {
+                return BadRequest("Cannot extend a reservation that is not close to expiration.");
+            }
+            
+            // If validations pass, extend the due date by 7 days.
+            reservation.DueDate = reservation.DueDate.Value.AddDays(7);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("Reservation extended successfully.");
+        }
+
+
 
         // GET: api/Reservation/{id}
         [HttpGet("{id}")]

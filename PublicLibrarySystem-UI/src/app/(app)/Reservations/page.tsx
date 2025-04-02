@@ -91,7 +91,7 @@ export default function ReservationPage() {
     if (filterPeriod === "all") return true;
     const resDate = new Date(reservation.reservationDate);
     const now = new Date();
-     const threshold = new Date();
+    const threshold = new Date();
     if (filterPeriod === "7") {
       threshold.setDate(now.getDate() - 7);
     } else if (filterPeriod === "14") {
@@ -111,6 +111,24 @@ export default function ReservationPage() {
       return due < new Date() ? "Overdue" : "Active";
     }
     return "Active";
+  };
+
+  // Helper to determine if the reservation can be extended.
+  // Returns an object with an 'allowed' flag and an optional 'reason'.
+  const canExtendReservation = (reservation: ReservationData): { allowed: boolean; reason?: string } => {
+    if (!reservation.dueDate) {
+      return { allowed: false, reason: "Due date is not set." };
+    }
+    const due = new Date(reservation.dueDate);
+    const now = new Date();
+    if (due < now) {
+      return { allowed: false, reason: "Cannot extend an expired reservation." };
+    }
+    // Check if due date is more than 2 days in the future.
+    if (due > new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000)) {
+      return { allowed: false, reason: "Cannot extend a reservation that is not close to expiration." };
+    }
+    return { allowed: true };
   };
 
   // Extend rental handler
@@ -224,14 +242,30 @@ export default function ReservationPage() {
                 </div>
               </div>
               {getStatus(reservation) === "Active" && (
-                <div className="flex justify-center">
-                  <Button
-                    className="px-6 py-3 text-2xl font-semibold rounded-lg"
-                    onClick={() => handleExtendRental(reservation.id)}
-                    disabled={updatingId === reservation.id}
-                  >
-                    {updatingId === reservation.id ? "Extending..." : "Extend Rental"}
-                  </Button>
+                <div className="flex flex-col items-center">
+                  {(() => {
+                    const extensionStatus = canExtendReservation(reservation);
+                    return (
+                      <>
+                        <Button
+                          className="px-6 py-3 text-2xl font-semibold rounded-lg"
+                          onClick={() => {
+                            if (!extensionStatus.allowed) {
+                              alert(extensionStatus.reason);
+                            } else {
+                              handleExtendRental(reservation.id);
+                            }
+                          }}
+                          disabled={!extensionStatus.allowed || updatingId === reservation.id}
+                        >
+                          {updatingId === reservation.id ? "Extending..." : "Extend Book Loan"}
+                        </Button>
+                        {!extensionStatus.allowed && (
+                          <p className="text-red-500 text-xl mt-2">{extensionStatus.reason}</p>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               )}
             </li>

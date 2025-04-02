@@ -40,6 +40,54 @@ namespace PublicLibrarySystem_API.Controllers
             }
         }
 
+        [HttpGet("GetRecommendedBooks")]
+        public async Task<ActionResult<IEnumerable<Book>>> GetRecommendedBooks(Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                return BadRequest("User ID is required.");
+            }
+            
+            try
+            {
+                // Get all books.
+                var books = await _context.Books.ToListAsync();
+                if (books == null || books.Count == 0)
+                {
+                    return NotFound("No books found.");
+                }
+                
+                // Retrieve reservations for the given user.
+                var reservations = await _context.Reservations
+                                                .Where(r => r.UserId == userId)
+                                                .ToListAsync();
+                
+                // Extract reserved genres from the user's past reservations.
+                // For each reservation, we look up the book and then get its Genre.
+                var reservedGenres = reservations
+                    .Select(r => books.FirstOrDefault(b => b.Id == r.BookId)?.Genre)
+                    .Where(g => !string.IsNullOrEmpty(g))
+                    .Select(g => g.ToLowerInvariant())
+                    .Distinct()
+                    .ToList();
+                
+                // Reorder the books:
+                // Books with a Genre that contains any of the reserved genres (case-insensitive) come first.
+                var recommendedBooks = books
+                    .OrderByDescending(b => reservedGenres.Any(rg => b.Genre != null && b.Genre.ToLowerInvariant().Contains(rg)))
+                    .ThenBy(b => b.Title)  // For consistency, sort the rest alphabetically.
+                    .ToList();
+                
+                return Ok(recommendedBooks);
+            }
+            catch (Exception ex)
+            {
+                // Log the error as needed.
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
         [HttpGet("GetBook/{*id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
