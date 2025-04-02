@@ -39,11 +39,15 @@ export async function middleware(request: NextRequest) {
   let userID = "";
   try {
     const payload = decodeJwt(tokenCookie.value);
-    if (payload.role && typeof payload.role === "string") {
-      const roles = payload.role.split(",").map((role) => role.trim());
-      isAdmin = roles.some((role) => role.toLowerCase() === "admin");
+    // Handle role whether it's a comma-delimited string or an array
+    if (payload.role) {
+      if (typeof payload.role === "string") {
+        const roles = payload.role.split(",").map((role) => role.trim());
+        isAdmin = roles.some((role) => role.toLowerCase() === "admin");
+      } else if (Array.isArray(payload.role)) {
+        isAdmin = payload.role.some((role) => role.toLowerCase() === "admin");
+      }
     }
-
     if (payload.userId && typeof payload.userId === "string") {
       userID = payload.userId;
     }
@@ -51,10 +55,9 @@ export async function middleware(request: NextRequest) {
     console.error("JWT decoding failed", error);
   }
 
-
   const response = NextResponse.next();
 
-  // Refresh the token cookie (if needed)
+  // Refresh the token cookie
   response.cookies.set("token", tokenCookie.value, {
     path: "/",
     maxAge: 60 * 60 * 24,
@@ -63,22 +66,18 @@ export async function middleware(request: NextRequest) {
     sameSite: "strict",
   });
 
-  // Set a non-httpOnly cookie for the role
+  // Ensure these cookies are set as strings
   response.cookies.set("userRole", isAdmin ? "admin" : "user", {
     path: "/",
     maxAge: 60 * 60 * 24,
-    // Do NOT mark as httpOnly so that client code can read it
   });
 
   response.cookies.set("userID", userID, {
     path: "/",
     maxAge: 60 * 60 * 24,
-    // Do NOT mark as httpOnly so that client code can read it
   });
 
-  if (
-    (pathname.startsWith("/Admin") && !isAdmin)
-  ) {
+  if (pathname.startsWith("/Admin") && !isAdmin) {
     const rootUrl = request.nextUrl.clone();
     rootUrl.pathname = "/";
     return NextResponse.redirect(rootUrl);
