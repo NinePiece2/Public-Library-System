@@ -24,8 +24,7 @@ export default function Home() {
   const [books, setBooks] = useState<Book[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [visibleCount, setVisibleCount] = useState<number>(4);
-
-  const userId = Cookies.get("userID");
+  const [userId, setUserId] = useState<string | null>(null);
 
   // Reference to the carousel container
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,8 +34,17 @@ export default function Home() {
   const gap = 24; // gap-6 = 24px
   const slideWidth = cardWidth + gap;
 
-  // Fetch books from the API endpoint
+  // Read the cookie on client mount
   useEffect(() => {
+    const cookieUserId = Cookies.get("userID");
+    if (cookieUserId) {
+      setUserId(cookieUserId);
+    }
+  }, []);
+
+  // Fetch books from the API endpoint only after userId is available
+  useEffect(() => {
+    if (!userId) return;
     const fetchBooks = async () => {
       try {
         const res = await fetch(`/api/proxy/api/Books/GetRecommendedBooks?userId=${userId}`);
@@ -47,7 +55,7 @@ export default function Home() {
       }
     };
     fetchBooks();
-  }, []);
+  }, [userId]);
 
   // Calculate the number of visible cards based on container width
   useEffect(() => {
@@ -75,6 +83,15 @@ export default function Home() {
   const prevSlide = () => {
     setCurrentIndex((prev) => Math.max(prev - visibleCount, 0));
   };
+
+  // If userId is not yet available, render a loading state.
+  if (!userId) {
+    return (
+      <div className="p-8">
+        <p className="text-2xl text-center">Loading user data...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="80vh p-8">
