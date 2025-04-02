@@ -153,6 +153,7 @@ export default function SearchPageContent() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={handleKeyDown}
+            style={{ color: "white" }}
           />
           <Button
             className="ml-4 px-6 py-3 text-2xl font-semibold rounded-lg"
