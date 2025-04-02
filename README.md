@@ -12,6 +12,10 @@ cd PublicLibrarySystem-UI
 ```
 
 ```bash
+npm install
+```
+
+```bash
 npm run dev:full
 ```
 
