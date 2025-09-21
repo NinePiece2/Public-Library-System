@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/UI"
+    directory: "/PublicLibrarySystem-UI"
     schedule:
       interval: "daily"
       time: "11:00"
