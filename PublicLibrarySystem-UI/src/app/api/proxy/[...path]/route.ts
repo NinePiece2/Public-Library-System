@@ -8,7 +8,6 @@ const API_BASE_URL = process.env.API_BASE_URL;
 
 type RouteContext = {
   params: Promise<{ path: string[] }>;
-  searchParams: URLSearchParams;
 };
 
 export async function GET(req: NextRequest, context: RouteContext) {
