@@ -29,3 +29,18 @@ updates:
           - "*"
     reviewers:
       - "ninepiece2"
+  
+  - package-ecosystem: "nuget"
+    directory: "/PublicLibrarySystem-API"
+    schedule:
+      interval: "daily"
+      time: "11:00"
+      timezone: "America/Toronto"
+    commit-message:
+      prefix: "deps(nuget)"
+    groups:
+      api-dependencies:
+        patterns:
+          - "*"
+    reviewers:
+      - "ninepiece2"

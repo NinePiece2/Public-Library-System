@@ -1,6 +1,6 @@
 
 ## Requirements
-- .NET 8 SDK/Runtime Installed
+- .NET 9 SDK/Runtime Installed
 - NodeJS
 
 ## Getting Started

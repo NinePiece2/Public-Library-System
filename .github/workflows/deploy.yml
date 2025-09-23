@@ -65,9 +65,55 @@ jobs:
 
             console.log("All builds completed!");
 
+      - name: Create Deployment
+        id: deployment
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: production
+          description: "Deploy commit ${{ github.sha }} to Kubernetes"
+          transient-environment: false
+          production-environment: true
+      
+      - name: Mark Deployment as In Progress
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: in_progress
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+
       - name: Update Kubernetes Deployment
         run: |
             kubectl set image deployment/public-library-system public-library-system-api=ninepiece2/public-library-system:api public-library-system-ui=ninepiece2/public-library-system:ui -n coe892
             kubectl annotate deployment public-library-system kubernetes.io/change-cause="Updated API image to ninepiece2/public-library-system:api and UI image to ninepiece2/public-library-system:ui" --overwrite -n coe892
             kubectl rollout restart deployment/public-library-system -n coe892
+      
+      - name: Mark Deployment as Rolling Out
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: in_progress
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          description: "Rolling out to Kubernetes..."
+
+      - name: Wait for Rollout to Finish
+        run: |
+          echo "⏳ Waiting for rollout to finish..."
+          kubectl rollout status deployment/public-library-system -n coe892 --timeout=5m
+      
+      - name: Mark Deployment as Successful
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: success
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Mark Deployment as Failed
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: failure
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
 
