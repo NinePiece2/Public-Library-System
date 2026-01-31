@@ -31,9 +31,6 @@ spec:
         - name: ssl-cert-volume
           secret:
             secretName: ssl-cert
-        - name: nginx-config-volume
-          configMap:
-            name: nginx-config
       containers:
         - name: public-library-system-api
           image: ninepiece2/public-library-system:api
@@ -79,19 +76,6 @@ spec:
             - name: SECRET_API_KEY
               value: "ORmEqGUYyJaC2GVgGOKb5yIQR9uGe1Ca7AKbWhg772/u/Rqjme+CONBd6zUXSlmMpC9+SrLIFXyrf9XhMEKjFapDNgcwjjHr3ABaou451traWFwevwPsU9JKwrhUyMd9OQrK+XPYRpUW+jNdOrALXidF7jkGISfxLPunQld/5Nk="
 
-        - name: public-library-system-nginx
-          image: nginx:latest
-          imagePullPolicy: Always
-          volumeMounts:
-            - name: ssl-cert-volume
-              mountPath: "/etc/ssl/certs"
-              readOnly: true
-            - name: nginx-config-volume
-              mountPath: "/etc/nginx/nginx.conf"
-              subPath: nginx.conf
-          ports:
-            - containerPort: 443
-
 ---
 
 apiVersion: v1
@@ -105,7 +89,7 @@ spec:
   ports:
     - name: https
       protocol: TCP
-      port: 443
-      targetPort: 443
+      port: 80
+      targetPort: 3000
       nodePort: 30003
   type: LoadBalancer
